@@ -1,0 +1,37 @@
+        public IActionResult Seperate(IFormCollection data)
+        {
+            var rawHtml = data["textarea"].ToString();
+            const string cssStart = "<!--STYLE START-->",
+                cssEnd = "<!--STYLE END-->",
+                bodyStart = "<!--BODY START-->",
+                bodyEnd = "<!--BODY END-->",
+                scriptStart = "<!--SCRIPT START-->",
+                scriptEnd = "<!--SCRIPT END-->";
+            string error = "";
+
+            int cssFrom = rawHtml.IndexOf(cssStart) + cssStart.Length;
+            int cssTo = rawHtml.LastIndexOf(cssEnd);
+            if (cssTo == -1 || cssFrom == -1)
+                error += "Erorr in css"; 
+            String css = rawHtml.Substring(cssFrom, cssTo - cssFrom);
+            rawHtml=rawHtml.Replace(css, "");
+
+            int scriptFrom = rawHtml.IndexOf(scriptStart) + scriptStart.Length;
+            int scriptTo = rawHtml.LastIndexOf(scriptEnd);
+            if (scriptFrom == -1 || scriptTo == -1)
+                error += "Erorr in script";
+            String script = rawHtml.Substring(scriptFrom, scriptTo - scriptFrom);
+            rawHtml=rawHtml.Replace(script, "");
+
+
+            int bodyFrom = rawHtml.IndexOf(bodyStart) + bodyStart.Length;
+            int bodyTo = rawHtml.LastIndexOf(bodyEnd);
+            if (bodyFrom == -1 || bodyTo == -1)
+                error += "Erorr in body";
+            String body = rawHtml.Substring(bodyFrom, bodyTo - bodyFrom);
+            rawHtml=rawHtml.Replace(body, "");
+
+            if (error.Length > 0)
+                return Content(error);
+            return Content(css+"\n"+script+"\n"+body);
+        }
