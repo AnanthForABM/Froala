@@ -1,0 +1,14 @@
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+</head>
+<body>
+    <form method="post" action="Home\Seperate">
+        <textarea id="htmltextarea" name="textarea"></textarea>        
+        <input type="submit" />
+        
+    </form>
+</body>
+</html>
